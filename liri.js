@@ -10,7 +10,6 @@ var userData = process.argv[2];
 var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 var moment = require('moment');
 var spotify = new Spotify(keys.spotify);
-var bandsInTown = require("bandsintown");
 var input = ""
 
 for (i = 3; i < process.argv.length; i++) {
@@ -19,7 +18,7 @@ for (i = 3; i < process.argv.length; i++) {
     } else {
         input = process.argv[i];
     }
-  }
+}
 
 console.log('user data ', userData)
 switch (userData) {
@@ -44,20 +43,24 @@ switch (userData) {
     break;
 }
  
-function concertThis(artist)  {
+function concertThis(err, artist)  {
     console.log('RUNNING CONCERT THIS ', artist)
-    var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
-    axios.get(queryUrl).then(
+    // bandsInTown = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
+    if (err) { 
+       // artist.catch(err)
+        return console.log('Error occurred: ' + err);
+    }   else   {
+    axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
         function(response) {
-            console.log('RESPONSE????? ', response.data.length)
+            console.log('RESPONSE????? ', artist)
    
-            response.data.forEach(element => 
-                console.log("Venue Name ", element.venue.name),
-                console.log("Venue Location ", element.venue.city),
-                console.log("Venue Event Date ", moment(element.datetime).format("MM-DD-YYYY")),
-        )});
-       // test().catch(() => {});
-    }
+            //for(var i=0; i > band.data.length; i++)
+                console.log("Venue Name ", response.data.venue.name),
+                console.log("Venue Location ", response.data.venue.city),
+                console.log("Venue Event Date ", moment(response.data.datetime, "YYYY-MM-DDTHH:mm:ss").format("MM-DD-YYYY"))
+            });
+        }
+    } 
     
 function spotifyThisSong(artist)  {
     spotify.search({ type: 'track', query: artist }, function(err, data) {
