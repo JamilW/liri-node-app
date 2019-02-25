@@ -12,7 +12,7 @@ Liri Node App
 
     * concert-this
 
-![CONCERTTHIS.PNG](/screenshots/concerthis.png)
+![CONCERTTHIS.PNG](/screenshots/concertthis.png)
 
     * spotify-this-song
 
